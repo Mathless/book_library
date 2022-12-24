@@ -1,0 +1,55 @@
+head
+    meta(charset="utf-8")
+    title Пользователи
+
+    meta(http-equiv="X-UA-Compatible", content="IE=edge")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    script(src="https://code.jquery.com/jquery-3.6.1.js")
+    script(src="https://code.jquery.com/ui/1.13.2/jquery-ui.js")
+    link(rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css")
+    link(rel="stylesheet", href="main.css")
+    script(src="users.js")
+
+
+header
+    div(id='header-text')
+        b
+            p.main Страница администрирования
+        p.hint здесь можно управлять участниками
+body
+    table(id='users-table')
+        thead
+            tr
+                th Фото
+                th Имя
+                th Дата рождения
+                th email
+                th Роль
+                th Статус
+                th Действия
+        tbody
+    div.form
+        dialog(id='editUserInfo')
+            form(role='form' name='form')
+                div.form-group
+                    label(for='photo') Фото:
+                    div.flex-gap-width
+                    input#photo.form-control(type='text', placeholder='photo' name='photo')
+                div.form-group
+                    label(for='name') ФИ:
+                    div.flex-gap-width
+                    input#name.form-control(type='text', placeholder='name' name='name')
+                div.form-group
+                    label(for='birth') Дата рождения:
+                    div.flex-gap-width
+                    input#birth.form-control(type='date', name='birth')
+                div.form-group
+                    label(for='email') email:
+                    div.flex-gap-width
+                    input#email.form-control(type='email', placeholder='email' name='email')
+                button.btn.btn-primary(type="submit", name="add", id="submitButton")
+                    div.btn-text Ок
+                button.btn.btn-cancel(type="cancel", name="cancel", value="cancel", id="cancelButton")
+                    div.btn-cancel-text Отмена
+
+

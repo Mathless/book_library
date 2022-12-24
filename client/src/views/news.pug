@@ -1,0 +1,23 @@
+doctype html
+head
+    meta(charset='utf-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1')
+    title jQuery UI Accordion - Default functionality
+    meta(http-equiv="X-UA-Compatible", content="IE=edge")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    script(src="https://code.jquery.com/jquery-3.6.1.js")
+    script(src="https://code.jquery.com/ui/1.13.2/jquery-ui.js")
+    link(rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css")
+    link(rel="stylesheet", href="main.css")
+    script(src="news.js")
+
+header
+    div(id='header-text')
+        b
+            p.main Новости
+        p.hint новости друзей пользователя:
+        p.hint(id="user-name" style="margin-left: 10px;") Пользователь
+        button.link(id='all-users') Все пользователи
+
+body
+    #accordion

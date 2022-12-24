@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+$heading-font-family: 'Roboto', sans-serif;
+$body-font-family: 'Roboto', sans-serif;
+$base-font-size: 14px;
+$base-line-height: 22px;
+$base-font-weight: 400;
+$main-text-color: rgba(0, 0, 0, 0.85);
+$hint-text-color: rgba(0, 0, 0, 0.45);
+$action-text-color: #1890FF;
+$table-header-color: #FAFAFA;
+$bg: #f5f5f5;
+
+html *
+{
+  font-size: $base-font-size;
+  font-family: $body-font-family !important;
+  line-height: $base-line-height !important;
+  font-weight: $base-font-weight;
+}
+
+body {
+  background: $bg;
+  padding: 12px;
+}
+
+header {
+  margin: 12px;
+  display: inline;
+  p.hint {
+    font-size: 20px;
+
+    display:inline-block;
+    color: $hint-text-color;
+  }
+
+  p.main {
+    font-size: 20px;
+
+    margin: 8px;
+    display:inline-block;
+    color: $main-text-color;
+  }
+}
+
+p.hint {
+  display:inline-block;
+  color: $hint-text-color;
+}
+
+p.main {
+  margin: 8px;
+  display:inline-block;
+  color: $main-text-color;
+}
+
+table{
+  width: 100%;
+}
+th {
+  font-weight: bold;
+  background: $table-header-color;
+}
+th, td {
+  padding: 5px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+
+}
+th {
+  text-align: left;
+}
+
+button.link {
+  background: none;
+  border: none;
+  color: $action-text-color;
+  cursor:pointer;
+}
+
+dialog{
+
+  background: #FFFFFF;
+  border: none;
+  box-shadow: 0px 3px 6px -4px rgba(0, 0, 0, 0.12), 0px 6px 16px rgba(0, 0, 0, 0.08), 0px 9px 28px 8px rgba(0, 0, 0, 0.05);
+  border-radius: 2px;
+  div {
+    margin: 4px;
+  }
+  input { display: table-cell; height: 32px; text-align: left; border: 1px solid #D9D9D9}
+
+}
+#submitButton {
+  width: 51px;
+  height: 32px;
+  background: #1890FF;
+  border: 1px solid #1890FF;
+  box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.043);
+  border-radius: 2px;
+  margin: 4px;
+
+}
+#cancelButton{
+  margin: 4px;
+
+  text-align: center;
+  height: 32px;
+  background: rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.043);
+  border: none;
+  border-radius: 2px;
+}
