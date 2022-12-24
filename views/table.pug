@@ -1,0 +1,236 @@
+html
+    head
+        meta(charset="utf-8")
+        link(rel='preconnect' href='https://fonts.googleapis.com')
+        link(rel='preconnect' href='https://fonts.gstatic.com' crossorigin='')
+        link(href='https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&display=swap' rel='stylesheet')
+        link(rel='stylesheet', href='font-awesome-4.7.0/css/font-awesome.min.css')
+        style
+            include table.css
+            include form.css
+    body
+        button.btn-icon(id="addBookButton")
+            i(class="fa fa-plus")
+        table(style='width:100%' id='tableBooks')
+            thead
+                tr
+                    th Автор
+                    th Название
+                    th Статус
+                        button.btn-icon(onclick = 'filterBooks()')
+                            i(class="fa fa-filter")
+                    th Дата Возврата
+                        button.btn-icon(onclick = 'sortBooks()')
+                            i(class="fa fa-sort")
+            tbody
+                each book in value
+                    tr
+                        td(class="clickable-row" onclick='openBook("' + book.id +'")')=book.author
+                        td(class="clickable-row" onclick='openBook("' + book.id +'")')=book.title
+                        td(class="clickable-row" onclick='openBook("' + book.id +'")')
+                            if (book.status === "В наличии")
+                                i(class="fa fa-circle" id="green-circle")
+                                =" "+book.status
+                            else if (book.status === "У читателя")
+                                i(class="fa fa-circle" id="grey-circle")
+                                =" "+book.status
+                            else if (book.status === "Возврат просрочен")
+                                i(class="fa fa-circle" id="red-circle")
+                                =" "+book.status
+                        td(class="clickable-row" onclick='openBook("' + book.id +'")')
+                            if (book.reader !== undefined && book.reader.returnDate !== undefined)
+                                = book.reader.returnDate
+                            else
+                                p Книга в библиотеке
+                        td
+                            button.btn-icon(onclick = 'deleteBook("' + book.id + '")')
+                                i(class="fa fa-trash")
+        div.form
+            dialog(id='addBookDialog')
+                form(role='form' name='form')
+                    div.form-group
+                        label(for='name') Название:
+                        div.flex-gap-width
+                        input#name.form-control(type='text', placeholder='Напишите название книги' name='name')
+                    div.flex-gap
+                    div.form-group
+                        label(for='author') Автор:
+                        div.flex-gap-width
+                        input#author.form-control(type='author', placeholder='Напишите автора книги' name='author')
+                    div.flex-gap
+                    div.form-group
+                        label(for='releaseDate') Дата выпуска:
+                        div.flex-gap-width
+                        input#releaseDate.form-control(type='date', name='releaseDate')
+                    div.flex-gap
+                    button.btn.btn-primary(type="submit", name="add", id="submitButton")
+                        div.btn-text Добавить
+                    div.flex-gap-width
+                    button.btn.btn-cancel(type="cancel", name="cancel", value="cancel", id="cancelButton")
+                        div.btn-cancel-text Отмена
+        script.
+
+          function validateForm() {
+            const a = document.forms["form"]['name'].value;
+            const b = document.forms["form"]['author'].value;
+            const c = document.forms["form"]['releaseDate'].value;
+            console.log(typeof c)
+            if (a === '' || b === '' || c === '') {
+              alert('Все поля должны быть заполнены');
+              return false;
+            } else {return true}
+          }
+
+          function openBook(id){
+            location.href=`http://localhost:3000/book/${id}`
+          }
+
+          const addBook = document.getElementById('addBookButton');
+          const addBookDialog = document.getElementById('addBookDialog');
+          const outputBox = document.querySelector('output');
+          const submitButton = document.getElementById('submitButton');
+          const cancelButton = document.getElementById('cancelButton');
+          const deleteButton = document.getElementById('deleteButton');
+
+          submitButton.addEventListener('click', async () =>
+            {
+              if (validateForm()) {
+                const data = {
+                  "title": document.forms["form"]['name'].value,
+                  "author": document.forms["form"]['author'].value,
+                    "releaseDate": document.forms["form"]['releaseDate'].value,
+                }
+                await fetch('http://localhost:3000/add-book', {
+                  method: 'POST', // or 'PUT'
+                  headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(data),
+                })
+                  .then((response) => response.json())
+                  .then((data) => {
+                    console.log('Success:', data);
+                  })
+                  .catch((error) => {
+                    console.error('Error:', error);
+                  });
+              }
+            }
+          )
+
+          // If a browser doesn't support the dialog, then hide the
+          // dialog contents by default.
+          if (typeof addBookDialog.showModal !== 'function') {
+            addBookDialog.hidden = true;
+            /* a fallback script to allow this dialog/form to function
+               for legacy browsers that do not support <dialog>
+               could be provided here.
+            */
+          }
+          // "Update details" button opens the <dialog> modally
+          addBook.addEventListener('click', () => {
+            if (typeof addBookDialog.showModal === "function") {
+              addBookDialog.showModal();
+            } else {
+              outputBox.value = "Sorry, the <dialog> API is not supported by this browser.";
+            }
+          });
+          // "Confirm" button of form triggers "close" on dialog because of [method="dialog"]
+          addBookDialog.addEventListener('close', () => {
+            location.reload();
+          });
+
+          async function deleteBook(id){
+            if (confirm("Удалить книгу?")){
+            await fetch(`http://localhost:3000/book/${id}`, {
+              method: 'DELETE', // or 'PUT'
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+              },
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                console.log('Success:', data);
+              })
+              .catch((error) => {
+                console.error('Error:', error);
+              });
+            location.reload();
+            }
+          }
+
+          function addBooks(books, tbodyRef) {
+            books.forEach((book) => {
+              const newRow = tbodyRef.insertRow();
+
+              let newCell = newRow.insertCell();
+              let newText = document.createTextNode(book.author);
+              newCell.appendChild(newText);
+
+              newCell = newRow.insertCell();
+              newText = document.createTextNode(book.title);
+              newCell.appendChild(newText);
+
+              newCell = newRow.insertCell();
+              newText = document.createTextNode(" " + book.status);
+              switch (book.status) {
+                case ('Возврат просрочен'):
+                  newCell.insertAdjacentHTML('beforeend', '<i class="fa fa-circle" id="red-circle"></i>')
+                  break
+                case ('В наличии'):
+                  newCell.insertAdjacentHTML('beforeend', '<i class="fa fa-circle" id="green-circle"></i>')
+                  break
+                case ('У читателя'):
+                  newCell.insertAdjacentHTML('beforeend', '<i class="fa fa-circle" id="grey-circle"></i>')
+                  break
+              }
+              newCell.appendChild(newText);
+
+              newCell = newRow.insertCell();
+              newText = document.createTextNode(book.reader !== undefined && book.reader.returnDate !== undefined ? book.reader.returnDate : "Книга в библиотеке");
+              newCell.appendChild(newText);
+
+              newCell = newRow.insertCell();
+              newCell.insertAdjacentHTML('beforeend', `<button class="btn-icon" onclick="deleteBook('${book.id}')"><i class="fa fa-trash"></i></button>`)
+            })
+          }
+          async function sortBooks(){
+            let books
+            await fetch(`http://localhost:3000/sort-by-return-date`, {
+              method: 'GET',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+              },
+            }).then((response) => books = response.json())
+            await books.then((res) => books = res)
+
+
+            const tbodyRef = document.getElementById('tableBooks').getElementsByTagName('tbody')[0];
+            tbodyRef.innerHTML = '';
+            // Insert a row at the end of table
+            addBooks(books, tbodyRef);
+
+
+            console.log(books)
+          }
+          async function filterBooks(){
+            let books
+              await fetch(`http://localhost:3000/filter-by-status`, {
+              method: 'GET',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+              },
+            }).then((response) => books = response.json())
+            await books.then((res) => books = res)
+            const tbodyRef = document.getElementById('tableBooks').getElementsByTagName('tbody')[0];
+            tbodyRef.innerHTML = '';
+            addBooks(books, tbodyRef);
+            console.log(books)
+          }
+
+
+

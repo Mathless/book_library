@@ -1,0 +1,66 @@
+<head><meta charset="utf-8"/><title>Title2</title><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&amp;display=swap" rel="stylesheet"/><style>form{
+    display: table;
+    justify-content: center;
+    width: 100%;
+}
+div.form-group{
+    display: table-row;
+    justify-content: center;
+}
+label { display: table-cell; text-align: right}
+input { display: table-cell; height: 32px; text-align: left; border: 1px solid #D9D9D9}
+
+div.flex-gap{
+    height: 30px;
+}
+div.flex-gap-width{
+    display: table-cell;
+    min-width: 10px;
+    height: 10px;
+}
+::placeholder{
+    color: rgba(0, 0, 0, 0.25);
+}
+button.btn.btn-primary{
+    text-align: center;
+    height: 32px;
+    background: #1890FF;
+    box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.043);
+    border: none;
+    border-radius: 2px;
+}
+button.btn.btn-cancel{
+    text-align: center;
+    height: 32px;
+    background: rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.043);
+    border: none;
+    border-radius: 2px;
+} 
+div.btn-text {
+    color: #ffffff;
+}
+div.btn-cancel {
+    color: black;
+}
+dialog {
+
+    border: 1px solid rgba(0, 0, 0, 0.25);
+}body{
+    font-family: 'Roboto', sans-serif;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    padding: 30px;}</style><body><div class="form"><form role="form" onsubmit="return validateForm()" name="form"><div class="form-group"><label for="name">Название:</label><div class="flex-gap-width"></div><input class="form-control" id="name" type="text" placeholder="Напишите название книги" name="name" value=" book.title"/></div><div class="flex-gap"></div><div class="form-group"><label for="author">Автор:</label><div class="flex-gap-width"></div><input class="form-control" id="author" type="author" placeholder="Напишите автора книги" name="author"/></div><div class="flex-gap"></div><div class="form-group"><label for="releaseDate">Дата выпуска:</label><div class="flex-gap-width"></div><input class="form-control" id="releaseDate" type="date" name="releaseDate"/></div><div class="flex-gap"></div><button class="btn btn-primary" type="save" name="save" id="saveButton"><div class="btn-text">Сохранить</div></button><div class="flex-gap-width"></div><button class="btn btn-primary" type="submit" name="add" id="giveButton"><div class="btn-text">Выдать читателю</div></button></form></div><script>function validateForm() {
+    const a = document.forms["form"]['name'].value;
+    const b = document.forms["form"]['author'].value;
+    const c = document.forms["form"]['releaseDate'].value;
+    console.log(typeof c)
+  if (a === '' || b  === '' || c === '' ) {
+        alert('Все поля должны быть заполнены');
+        return false;
+    } else {
+    location.href = location.href.substring(location.href.lastIndexOf("/") + 1);
+    return true
+  }
+}</script></body></head>

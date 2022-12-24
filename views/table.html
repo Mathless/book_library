@@ -1,0 +1,141 @@
+<html><head><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&amp;display=swap" rel="stylesheet"/><link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css"/><style>.fa-circle{
+    font-size: xx-small;
+}
+#green-circle{
+    color: #52C41A;
+}
+#red-circle{
+    color: #FF4D4F;
+}
+#grey-circle{
+    color: #E0E0E0;
+}
+body{
+    font-family: 'Roboto', sans-serif;
+}
+table{
+}
+th {
+    background: #FAFAFA;
+}
+th, td {
+    padding: 5px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+
+}
+th {
+    text-align: left;
+}
+form{
+    display: table;
+    justify-content: center;
+    width: 100%;
+}
+div.form-group{
+    display: table-row;
+    justify-content: center;
+}
+label { display: table-cell; text-align: right}
+input { display: table-cell; height: 32px; text-align: left; border: 1px solid #D9D9D9}
+
+div.flex-gap{
+    height: 30px;
+}
+div.flex-gap-width{
+    display: table-cell;
+    min-width: 10px;
+    height: 10px;
+}
+::placeholder{
+    color: rgba(0, 0, 0, 0.25);
+}
+button.btn.btn-primary{
+
+
+    text-align: center;
+    height: 32px;
+    /* Primary/6 */
+
+    background: #1890FF;
+
+
+    border: 1px solid #1890FF;
+
+    box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.043);
+    border-radius: 2px;
+
+}
+div.btn-text {
+    color: #ffffff;
+}
+</style></head><body><button id="addBookButton"><i class="fa fa-plus"></i></button><table style="width:100%"><tr><th>Автор</th><th>Название</th><th>Статус</th><th>Дата Возврата</th></tr></table><div class="form"><dialog id="addBookDialog"><form role="form" name="form"><div class="form-group"><label for="name">Название:</label><div class="flex-gap-width"></div><input class="form-control" id="name" type="text" placeholder="Напишите название книги" name="name"/></div><div class="flex-gap"></div><div class="form-group"><label for="author">Автор:</label><div class="flex-gap-width"></div><input class="form-control" id="author" type="author" placeholder="Напишите автора книги" name="author"/></div><div class="flex-gap"></div><div class="form-group"><label for="releaseDate">Дата выпуска:</label><div class="flex-gap-width"></div><input class="form-control" id="releaseDate" type="date" name="releaseDate"/></div><div class="flex-gap"></div><button class="btn btn-primary" type="submit" name="add" id="submitButton"><div class="btn-text">Добавить</div></button><button class="btn btn-cancel" type="cancel" name="cancel" value="cancel" id="cancelButton"><div class="btn-text">Отмена</div></button></form></dialog></div><script>function validateForm() {
+  const a = document.forms["form"]['name'].value;
+  const b = document.forms["form"]['author'].value;
+  const c = document.forms["form"]['releaseDate'].value;
+  console.log(typeof c)
+  if (a === '' || b === '' || c === '') {
+    alert('Все поля должны быть заполнены');
+    return false;
+  } else {return true}
+}
+
+
+
+const addBook = document.getElementById('addBookButton');
+const addBookDialog = document.getElementById('addBookDialog');
+const outputBox = document.querySelector('output');
+const submitButton = document.getElementById('submitButton');
+const cancelButton = document.getElementById('cancelButton');
+
+submitButton.addEventListener('click', async () =>
+  {
+    if (validateForm()) {
+      body = {
+        "title": "123",
+        "author": "123",
+      "releaseDate": "123",
+      }
+      await fetch('http://localhost:3000/add-book', {
+        method: 'POST', // or 'PUT'
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          "title": "123",
+          "author": "123",
+          "releaseDate": "123",
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('Success:', data);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    }
+  }
+)
+
+// If a browser doesn't support the dialog, then hide the
+// dialog contents by default.
+if (typeof addBookDialog.showModal !== 'function') {
+  addBookDialog.hidden = true;
+  /* a fallback script to allow this dialog/form to function
+     for legacy browsers that do not support <dialog>
+     could be provided here.
+  */
+}
+// "Update details" button opens the <dialog> modally
+addBook.addEventListener('click', () => {
+  if (typeof addBookDialog.showModal === "function") {
+    addBookDialog.showModal();
+  } else {
+    outputBox.value = "Sorry, the <dialog> API is not supported by this browser.";
+  }
+});
+// "Confirm" button of form triggers "close" on dialog because of [method="dialog"]
+addBookDialog.addEventListener('close', () => {
+  location.reload();
+});</script></body></html>
